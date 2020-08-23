@@ -2,6 +2,7 @@ package com.funcar.service;
 
 import com.funcar.persistence.entity.Vehicle;
 import com.funcar.persistence.repository.VehicleRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class VehicleDataUploadService {
 
     private final VehicleRepository vehicleRepository;
-
-    public VehicleDataUploadService(VehicleRepository vehicleRepository) {
-        this.vehicleRepository = vehicleRepository;
-    }
 
     @Transactional
     public <T> void upload(T data,

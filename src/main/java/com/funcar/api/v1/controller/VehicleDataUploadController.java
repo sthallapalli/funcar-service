@@ -35,7 +35,7 @@ public class VehicleDataUploadController {
     public ResponseEntity<String> uploadCsv(@RequestParam(name = "file") MultipartFile file, @PathVariable(name = "dealer_id") String dealerId) {
 
         log.info("Received a request to upload the json vehicle data from dealer id={}", dealerId);
-        vehicleDataUploadService.upload(file, dealerId, DataFormatType.CSV.getProcessor()::apply);
+        vehicleDataUploadService.upload(file, dealerId, DataFormatType.CSV.getProcessor());
         return ResponseEntity.ok(SUCCESS);
     }
 
@@ -43,7 +43,7 @@ public class VehicleDataUploadController {
     public ResponseEntity<String> uploadJson(@Valid @RequestBody List<VehicleResource> vehicleData, @PathVariable(name = "dealer_id") @NotNull String dealerId) {
 
         log.info("Received a request to upload the json vehicle data from dealer id={}", dealerId);
-        vehicleDataUploadService.upload(vehicleData, dealerId, DataFormatType.JSON.getProcessor()::apply);
+        vehicleDataUploadService.upload(vehicleData, dealerId, DataFormatType.JSON.getProcessor());
         return ResponseEntity.ok(SUCCESS);
     }
 }
