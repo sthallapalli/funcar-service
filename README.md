@@ -32,7 +32,7 @@ This service provides endpoints for external dealers to upload the vehicles deta
 
 Please import the postman collection from project to perform operations on vehicles data
 
-Note: For csv upload endpoint, please select a csv file in form-data file parameter.
+Note: For csv upload endpoint api call, please select a csv file in form-data **file** parameter.
 
 
 ### Test results
