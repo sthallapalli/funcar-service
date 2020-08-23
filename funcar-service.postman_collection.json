@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "43c3691f-4040-43f4-a710-6fe0f4ec0da7",
+		"name": "funcar-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "funcar - Upload json vehicle data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"code\": \"a\",\n        \"make\": \"renault\",\n        \"model\": \"megane\",\n        \"kW\": 132,\n        \"year\": 2014,\n        \"color\": \"red\",\n        \"price\": 13990\n    },\n    {\n        \"code\": \"b\",\n        \"make\": \"bmw\",\n        \"model\": \"x3\",\n        \"kW\": 200,\n        \"year\": 2010,\n        \"color\": \"blue\",\n        \"price\": 20000\n    },\n    {\n        \"code\": \"c\",\n        \"make\": \"audi\",\n        \"model\": \"a5\",\n        \"kW\": 300,\n        \"year\": 2009,\n        \"color\": \"white\",\n        \"price\": 21000\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/dealer_vehicle/1/vehicle_listings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"dealer_vehicle",
+						"1",
+						"vehicle_listings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "funcar - Upload csv vehicle data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/sthallapalli/srinivas/funcar-service/src/test/resources/cars.csv"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/dealer_vehicle/upload_csv/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"dealer_vehicle",
+						"upload_csv",
+						"2"
+					],
+					"query": [
+						{
+							"key": "file",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "funcar - List all vehicles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "funcar - List all vehicles by criteria",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"make\" : \"Mercedes\",\n    \"model\":\"a 180\",\n    \"year\": null,\n    \"color\": \"Black\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"search"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
