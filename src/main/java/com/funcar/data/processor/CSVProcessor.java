@@ -30,6 +30,9 @@ public class CSVProcessor {
 
     public List<Vehicle> process(MultipartFile multipartFile, String dealerId) {
 
+        if (Objects.isNull(multipartFile) || multipartFile.isEmpty() || !multipartFile.getOriginalFilename().endsWith(".csv"))
+            throw new RuntimeException("No csv file found");
+
         try {
             Reader reader = new InputStreamReader(multipartFile.getInputStream());
             CSVParser csvRecords = CSV_FORMAT.parse(reader);
@@ -43,7 +46,7 @@ public class CSVProcessor {
     private Vehicle mapToObj(CSVRecord csvRecord) {
 
         if (!csvRecord.isConsistent()) {
-            log.info("Incorrect csv record found for code={}",csvRecord.get(CODE.getHeaderName()));
+            log.info("Incorrect csv record found for code={}", csvRecord.get(CODE.getHeaderName()));
             return null;
         }
 

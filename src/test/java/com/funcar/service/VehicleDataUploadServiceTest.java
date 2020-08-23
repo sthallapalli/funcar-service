@@ -54,7 +54,7 @@ public class VehicleDataUploadServiceTest {
         when(this.vehicleRepository.saveAll(anyList())).thenReturn(VehicleMapper.mapToEntityList(vehicleResourceList));
 
         // WHEN
-        this.dealerVehicleListService.upload(vehicleResourceList, "1", DataFormatType.JSON);
+        this.dealerVehicleListService.upload(vehicleResourceList, "1", DataFormatType.JSON.getProcessor()::apply);
 
         //THEN
         verify(this.vehicleRepository).saveAll(vehicleArgumentCaptor.capture());
@@ -73,7 +73,7 @@ public class VehicleDataUploadServiceTest {
         when(this.vehicleRepository.saveAll(anyList())).thenReturn(vehicles);
 
         // WHEN
-        this.dealerVehicleListService.upload(multipartFile, "1", DataFormatType.CSV);
+        this.dealerVehicleListService.upload(multipartFile, "1", DataFormatType.CSV.getProcessor()::apply);
 
         //THEN
         verify(this.vehicleRepository).saveAll(vehicleArgumentCaptor.capture());

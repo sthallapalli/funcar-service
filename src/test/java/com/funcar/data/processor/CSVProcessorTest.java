@@ -22,7 +22,7 @@ public class CSVProcessorTest {
     @Test
     public void test() throws Exception {
         File dataFile = ResourceUtils.getFile("classpath:cars.csv");
-        MultipartFile file = new MockMultipartFile("file", new FileInputStream(dataFile));
+        MultipartFile file = new MockMultipartFile("file", "cars.csv", null, new FileInputStream(dataFile));
 
         List<Vehicle> vehicleList = csvProcessor.process(file, "1");
 

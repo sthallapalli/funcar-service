@@ -1,15 +1,15 @@
 package com.funcar.service;
 
-import com.funcar.persistence.entity.Vehicle;
-import com.funcar.persistence.repository.VehicleRepository;
 import com.funcar.api.v1.resource.SearchResource;
 import com.funcar.api.v1.resource.VehicleResource;
+import com.funcar.persistence.entity.Vehicle;
+import com.funcar.persistence.repository.VehicleRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class VehicleSearchServiceTest {
 
     @Mock
