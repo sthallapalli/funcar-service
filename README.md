@@ -34,8 +34,7 @@ Please import the postman collection from project to perform operations on vehic
 
 Note: For csv upload endpoint, please select a csv file in form-data file parameter.
 
-* [Postman Funcar API collection](https://github.com/sthallapalli/funcar-service/funcar-service.postman_collection.json)
 
 ### Test results
 
-* [Postman Results](https://github.com/sthallapalli/funcar-service/postman_results.docx)
+* Please check **postman_results.docx** file in project home directory for sample api call results.
