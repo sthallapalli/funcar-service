@@ -2,8 +2,9 @@ package com.funcar.api.v1.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.funcar.api.v1.resource.VehicleResource;
+import com.funcar.enums.DataFormatType;
 import com.funcar.exception.ApiExceptionHandler;
+import com.funcar.api.v1.resource.VehicleResource;
 import com.funcar.service.VehicleDataUploadService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,18 +13,23 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,7 +59,7 @@ public class VehicleDataUploadControllerTest {
         List<VehicleResource> vehicleResources = objectMapper.readValue(file, new TypeReference<List<VehicleResource>>() {
         });
 
-        doNothing().when(this.dealerVehicleListService).upload(anyList(), anyString());
+        doNothing().when(this.dealerVehicleListService).upload(anyList(), anyString(), any(DataFormatType.class));
 
         // WHEN
         mockMvc.perform(post("/api/v1/dealer_vehicle/1/vehicle_listings")
@@ -68,7 +74,7 @@ public class VehicleDataUploadControllerTest {
     public void testFailureWhenExceptionWhileUploadJson() throws Exception {
 
         //GIVEN
-        doThrow(new RuntimeException()).when(this.dealerVehicleListService).upload(anyList(), anyString());
+        doThrow(new RuntimeException()).when(this.dealerVehicleListService).upload(anyList(), anyString(), any(DataFormatType.class));
         File file = ResourceUtils.getFile("classpath:cars.json");
 
         // WHEN
@@ -79,4 +85,58 @@ public class VehicleDataUploadControllerTest {
                 // THEN
                 .andExpect(status().is5xxServerError());
     }
+
+
+    @Test
+    public void testSuccessWhenUploadCsv() throws Exception {
+
+        //GIVEN
+        File dataFile = ResourceUtils.getFile("classpath:cars.csv");
+        MockMultipartFile file = new MockMultipartFile("file", new FileInputStream(dataFile));
+
+        // WHEN
+        mockMvc.perform(multipart("/api/v1/dealer_vehicle/upload_csv/1")
+                .file(file))
+
+                // THEN
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testFailureWhenExceptionWhileUploadCsv() throws Exception {
+
+        //GIVEN
+        doThrow(new RuntimeException()).when(this.dealerVehicleListService).upload(any(MultipartFile.class), anyString(), any(DataFormatType.class));
+        File dataFile = ResourceUtils.getFile("classpath:cars.csv");
+        MockMultipartFile file = new MockMultipartFile("file", new FileInputStream(dataFile));
+
+        // WHEN
+        mockMvc.perform(multipart("/api/v1/dealer_vehicle/upload_csv/1")
+                .file(file))
+
+                // THEN
+                .andExpect(status().is5xxServerError());
+    }
+
+
+
+/*    @Test
+    public void testFailureWithWrongInput() throws Exception {
+
+        //GIVEN
+        File file = ResourceUtils.getFile("classpath:cars.json");
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<VehicleResource> vehicleData = objectMapper.readValue(file, new TypeReference<List<VehicleResource>>() { });
+        vehicleData.get(0).setCode(null);
+
+        // WHEN
+        mockMvc.perform(post("/api/v1/dealer_vehicle/1/vehicle_listings")
+                .content(objectMapper.writeValueAsBytes(vehicleData))
+                .contentType(MediaType.APPLICATION_JSON))
+
+                // THEN
+                .andExpect(status().isBadRequest());
+    }*/
+
+
 }

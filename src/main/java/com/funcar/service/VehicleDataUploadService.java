@@ -1,15 +1,17 @@
 package com.funcar.service;
 
-import com.funcar.api.v1.resource.VehicleResource;
-import com.funcar.mapper.VehicleMapper;
+import com.funcar.enums.DataFormatType;
 import com.funcar.persistence.entity.Vehicle;
 import com.funcar.persistence.repository.VehicleRepository;
+import com.funcar.api.v1.resource.VehicleResource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,13 +26,29 @@ public class VehicleDataUploadService {
         this.vehicleRepository = vehicleRepository;
     }
 
+    @Transactional
+    public void upload(MultipartFile multipartFile, String dealerId, DataFormatType dataFormatType) {
+
+        if (Objects.isNull(multipartFile) || multipartFile.isEmpty() || !multipartFile.getOriginalFilename().endsWith(".csv"))
+            throw new RuntimeException("No csv file found");
+
+        List<Vehicle> vehicleList = dataFormatType.getProcessor().apply(multipartFile, dealerId)
+                .stream()
+                .map(vehicle -> vehicle.setDealerId(dealerId))
+                .collect(Collectors.toList());
+
+
+        List<Vehicle> resultList = vehicleRepository.saveAll(vehicleList);
+        log.info("Saved {} vehicles data from dealer id={}", resultList.size(), dealerId);
+    }
+
     /**
      * @param vehicleDataList
      * @param dealerId
      */
     @Transactional
-    public void upload(List<VehicleResource> vehicleDataList, String dealerId) {
-        List<Vehicle> vehicleList = VehicleMapper.mapToEntityList(vehicleDataList)
+    public void upload(List<VehicleResource> vehicleDataList, String dealerId, DataFormatType dataFormatType) {
+        List<Vehicle> vehicleList = dataFormatType.getProcessor().apply(vehicleDataList, dealerId)
                 .stream()
                 .map(vehicle -> vehicle.setDealerId(dealerId))
                 .collect(Collectors.toList());
