@@ -1,0 +1,29 @@
+[
+  {
+    "code": "a",
+    "make": "renault",
+    "model": "megane",
+    "kW": 132,
+    "year": 2014,
+    "color": "red",
+    "price": 13990
+  },
+  {
+    "code": "b",
+    "make": "bmw",
+    "model": "x3",
+    "kW": 200,
+    "year": 2010,
+    "color": "blue",
+    "price": 20000
+  },
+  {
+    "code": "c",
+    "make": "audi",
+    "model": "a5",
+    "kW": 300,
+    "year": 2009,
+    "color": "white",
+    "price": 21000
+  }
+]
