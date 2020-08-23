@@ -27,22 +27,24 @@ import java.util.List;
 @RequestMapping("/api/v1/dealer_vehicle")
 public class VehicleDataUploadController {
 
+    private static final String SUCCESS = "SUCCESS";
+
     private final VehicleDataUploadService vehicleDataUploadService;
 
     @PostMapping(path = "/upload_csv/{dealer_id}")
     public ResponseEntity<String> uploadCsv(@RequestParam(name = "file") MultipartFile file, @PathVariable(name = "dealer_id") String dealerId) {
 
         log.info("Received a request to upload the json vehicle data from dealer id={}", dealerId);
-        vehicleDataUploadService.upload(file, dealerId, DataFormatType.CSV);
-        return ResponseEntity.ok("SUCCESS");
+        vehicleDataUploadService.upload(file, dealerId, DataFormatType.CSV.getProcessor()::apply);
+        return ResponseEntity.ok(SUCCESS);
     }
 
     @PostMapping(path = "/{dealer_id}/vehicle_listings", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> uploadJson(@Valid @RequestBody List<VehicleResource> vehicleData, @PathVariable(name = "dealer_id") @NotNull String dealerId) {
 
         log.info("Received a request to upload the json vehicle data from dealer id={}", dealerId);
-        vehicleDataUploadService.upload(vehicleData, dealerId, DataFormatType.JSON);
-        return ResponseEntity.ok("SUCCESS");
+        vehicleDataUploadService.upload(vehicleData, dealerId, DataFormatType.JSON.getProcessor()::apply);
+        return ResponseEntity.ok(SUCCESS);
     }
 }
 

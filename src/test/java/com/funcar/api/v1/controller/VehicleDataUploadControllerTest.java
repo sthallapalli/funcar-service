@@ -1,10 +1,6 @@
 package com.funcar.api.v1.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.funcar.enums.DataFormatType;
 import com.funcar.exception.ApiExceptionHandler;
-import com.funcar.api.v1.resource.VehicleResource;
 import com.funcar.service.VehicleDataUploadService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
-import java.util.List;
+import java.util.function.BiFunction;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -55,11 +51,7 @@ public class VehicleDataUploadControllerTest {
 
         //GIVEN
         File file = ResourceUtils.getFile("classpath:cars.json");
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<VehicleResource> vehicleResources = objectMapper.readValue(file, new TypeReference<List<VehicleResource>>() {
-        });
-
-        doNothing().when(this.dealerVehicleListService).upload(anyList(), anyString(), any(DataFormatType.class));
+        doNothing().when(this.dealerVehicleListService).upload(anyList(), anyString(), any(BiFunction.class));
 
         // WHEN
         mockMvc.perform(post("/api/v1/dealer_vehicle/1/vehicle_listings")
@@ -74,7 +66,7 @@ public class VehicleDataUploadControllerTest {
     public void testFailureWhenExceptionWhileUploadJson() throws Exception {
 
         //GIVEN
-        doThrow(new RuntimeException()).when(this.dealerVehicleListService).upload(anyList(), anyString(), any(DataFormatType.class));
+        doThrow(new RuntimeException()).when(this.dealerVehicleListService).upload(anyList(), anyString(), any(BiFunction.class));
         File file = ResourceUtils.getFile("classpath:cars.json");
 
         // WHEN
@@ -106,7 +98,7 @@ public class VehicleDataUploadControllerTest {
     public void testFailureWhenExceptionWhileUploadCsv() throws Exception {
 
         //GIVEN
-        doThrow(new RuntimeException()).when(this.dealerVehicleListService).upload(any(MultipartFile.class), anyString(), any(DataFormatType.class));
+        doThrow(new RuntimeException()).when(this.dealerVehicleListService).upload(any(MultipartFile.class), anyString(), any(BiFunction.class));
         File dataFile = ResourceUtils.getFile("classpath:cars.csv");
         MockMultipartFile file = new MockMultipartFile("file", new FileInputStream(dataFile));
 
