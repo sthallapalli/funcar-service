@@ -29,17 +29,17 @@ public class VehicleDataUploadService {
         List<Vehicle> vehicleList = processor.apply(data, dealerId)
                 .stream()
                 .map(vehicle -> vehicle.setDealerId(dealerId))
+                .map(this::updateCheck)
                 .collect(Collectors.toList());
 
-        List<Vehicle> finalVehicleList = vehicleList.stream().map(this::updateCheck).collect(Collectors.toList());
-        List<Vehicle> resultList = vehicleRepository.saveAll(finalVehicleList);
+        List<Vehicle> resultList = vehicleRepository.saveAll(vehicleList);
         log.info("Saved {} vehicles data from dealer id={}", resultList.size(), dealerId);
     }
 
 
     private Vehicle updateCheck(Vehicle incomingVehicle) {
         Optional<Vehicle> existingVehicle = vehicleRepository.findByDealerIdAndCode(incomingVehicle.getDealerId(), incomingVehicle.getCode());
-        existingVehicle.ifPresent(vehicle -> BeanUtils.copyProperties(incomingVehicle, vehicle, "id"));
+        existingVehicle.ifPresent(vehicle -> BeanUtils.copyProperties(incomingVehicle, vehicle, "id","audit"));
         return existingVehicle.orElse(incomingVehicle);
     }
 }
