@@ -18,7 +18,7 @@ public class VehicleSearchSpecifications {
             if (StringUtils.isEmpty(make))
                 return cb.isTrue(cb.literal(true));
 
-            return cb.equal(vehicleRoot.get(MAKE), make);
+            return cb.like(cb.lower(vehicleRoot.get(MAKE)), make.toLowerCase());
         };
     }
 
@@ -28,7 +28,7 @@ public class VehicleSearchSpecifications {
             if (StringUtils.isEmpty(model))
                 return cb.isTrue(cb.literal(true));
 
-            return cb.equal(vehicleRoot.get(MODEL), model);
+            return cb.like(cb.lower(vehicleRoot.get(MODEL)), model.toLowerCase());
         };
     }
 
@@ -47,7 +47,7 @@ public class VehicleSearchSpecifications {
             if (StringUtils.isEmpty(color))
                 return cb.isTrue(cb.literal(true));
 
-            return cb.equal(vehicleRoot.get(COLOR), color);
+            return cb.like(cb.lower(vehicleRoot.get(COLOR)), color.toLowerCase());
         };
     }
 }
