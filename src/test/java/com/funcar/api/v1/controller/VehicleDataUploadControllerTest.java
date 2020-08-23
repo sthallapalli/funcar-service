@@ -117,26 +117,4 @@ public class VehicleDataUploadControllerTest {
                 // THEN
                 .andExpect(status().is5xxServerError());
     }
-
-
-
-/*    @Test
-    public void testFailureWithWrongInput() throws Exception {
-
-        //GIVEN
-        File file = ResourceUtils.getFile("classpath:cars.json");
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<VehicleResource> vehicleData = objectMapper.readValue(file, new TypeReference<List<VehicleResource>>() { });
-        vehicleData.get(0).setCode(null);
-
-        // WHEN
-        mockMvc.perform(post("/api/v1/dealer_vehicle/1/vehicle_listings")
-                .content(objectMapper.writeValueAsBytes(vehicleData))
-                .contentType(MediaType.APPLICATION_JSON))
-
-                // THEN
-                .andExpect(status().isBadRequest());
-    }*/
-
-
 }
