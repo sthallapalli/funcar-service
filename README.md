@@ -1,5 +1,4 @@
-# ReadMe
-## funcar-service
+# funcar-service
 This service provides endpoints for external dealers to upload the vehicles details to platform. As of now the service supports JSON and CSV formats of data. It can further extended to support other data formats as well.
 
 ### Technology Stack
@@ -13,6 +12,8 @@ This service provides endpoints for external dealers to upload the vehicles deta
 * Maven
 
 ### How to Run?
+
+Please follow any one of the following two approaches
 
 1. Run following maven command from project home directory in a terminal 
     
