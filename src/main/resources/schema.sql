@@ -1,0 +1,17 @@
+CREATE SCHEMA IF NOT EXISTS funcar;
+
+CREATE TABLE vehicle (
+  id IDENTITY PRIMARY KEY,
+  code VARCHAR(50) NOT NULL,
+  make VARCHAR(20) NOT NULL,
+  model VARCHAR(50) NOT NULL,
+  power_kw INT NOT NULL,
+  year VARCHAR(20) NOT NULL,
+  color VARCHAR(20) NOT NULL,
+  price DECIMAL NOT NULL,
+  dealer_id VARCHAR(20) NOT NULL,
+  created_on TIMESTAMP WITH TIME ZONE NOT NULL,
+  updated_on TIMESTAMP WITH TIME ZONE NOT NULL,
+
+  CONSTRAINT uq_dealer_id_code_key UNIQUE (dealer_id, code)
+);
