@@ -33,8 +33,7 @@ public class CSVProcessor {
         if (Objects.isNull(multipartFile) || multipartFile.isEmpty() || !multipartFile.getOriginalFilename().endsWith(".csv"))
             throw new RuntimeException("No csv file found");
 
-        try {
-            Reader reader = new InputStreamReader(multipartFile.getInputStream());
+        try (Reader reader = new InputStreamReader(multipartFile.getInputStream())) {
             CSVParser csvRecords = CSV_FORMAT.parse(reader);
             return csvRecords.getRecords().stream().skip(1).map(this::mapToObj).filter(Objects::nonNull).collect(Collectors.toList());
 
